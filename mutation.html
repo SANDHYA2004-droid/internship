@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="myDiv">Original Text</div>
+<button id="btn">Change Text</button>
+
+<script>
+let targetNode = document.getElementById("myDiv");
+
+let observer = new MutationObserver((mutationsList) => {
+    console.log("Something changed in #myDiv!");
+});
+
+observer.observe(targetNode, { childList: true, subtree: true });
+
+document.getElementById("btn").addEventListener("click", () => {
+    targetNode.textContent = "Text Changed!";
+});
+</script>
+
+</body>
+</html>
