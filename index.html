@@ -1,0 +1,144 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping List App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8ffae 0%, #43c6ac 100%);
+            color: #222;
+        }
+        h1 {
+            text-align: center;
+            color: #2d6a4f;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 2px #fff;
+        }
+        form {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 25px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(67,198,172,0.15);
+            padding: 18px;
+        }
+        input[type="text"], input[type="date"] {
+            padding: 10px;
+            border: 1px solid #43c6ac;
+            border-radius: 5px;
+            font-size: 1em;
+            background: #f6fff8;
+            transition: border 0.2s;
+        }
+        input:focus {
+            border-color: #2d6a4f;
+            outline: none;
+        }
+        button {
+            padding: 10px 18px;
+            background: linear-gradient(90deg, #43c6ac 0%, #f8ffae 100%);
+            border: none;
+            border-radius: 5px;
+            color: #222;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(67,198,172,0.12);
+            transition: background 0.2s, color 0.2s;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #2d6a4f 0%, #f8ffae 100%);
+            color: #fff;
+        }
+        #loadUsers {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        /* Make Add User button small */
+        #userForm button[type="submit"] {
+            width: 120px;
+            padding: 7px 0;
+            font-size: 0.95em;
+            margin-top: 5px;
+            justify-self: start;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #14532d; /* dark green */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(67,198,172,0.10);
+        }
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+        }
+        th {
+            background: #166534; /* slightly lighter dark green */
+            color: #fff;
+            font-size: 1.05em;
+            letter-spacing: 1px;
+        }
+        td {
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background: #176a3a; /* alternate dark green shade */
+        }
+        tr:hover {
+            background: #1e7c47;
+        }
+        td button {
+            margin-right: 6px;
+            padding: 7px 14px;
+            font-size: 0.95em;
+            background: #fff;
+            color: #14532d;
+            border: none;
+            border-radius: 4px;
+            box-shadow: 0 1px 4px rgba(67,198,172,0.12);
+            transition: background 0.2s, color 0.2s;
+        }
+        td button:hover {
+            background: #14532d;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Shopping List</h1>
+    <form id="userForm">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="text" id="items" placeholder="Items (comma separated)" required>
+        <input type="date" id="date" required>
+        <button type="submit">Add User</button>
+    </form>
+    <button id="loadUsers">Load Users</button>
+    <table id="usersTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Items</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script src="/script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
