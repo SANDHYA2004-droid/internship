@@ -1,0 +1,85 @@
+function autoFillSunoAI({ lyrics, style, title }) {
+    // Fill lyrics
+    const lyricsTextarea = document.querySelector('textarea[data-testid="lyrics-input-textarea"]');
+    if (lyricsTextarea) {
+        lyricsTextarea.value = lyrics;
+        lyricsTextarea.dispatchEvent(new Event('input', { bubbles: true }));
+    } else {
+        console.error("Lyrics textarea not found!");
+    }
+
+    // Fill style
+    const styleTextarea = document.querySelector('textarea[data-testid="tag-input-textarea"]');
+    if (styleTextarea) {
+        styleTextarea.value = style;
+        styleTextarea.dispatchEvent(new Event('input', { bubbles: true }));
+    } else {
+        console.error("Style textarea not found!");
+    }
+
+    // Fill title
+    const titleInput = document.querySelector('input[placeholder="Enter song title"]');
+    if (titleInput) {
+        titleInput.value = title;
+        titleInput.dispatchEvent(new Event('input', { bubbles: true }));
+    } else {
+        console.error("Title input not found!");
+    }
+}
+
+function observeWorkspaceChange(callback) {
+    // Find the workspace button by its text or selector
+    const workspaceButton = Array.from(document.querySelectorAll('button span')).find(span =>
+        span.textContent.trim().toLowerCase().includes('workspace')
+    );
+    if (!workspaceButton) {
+        console.error("Workspace button not found!");
+        return;
+    }
+
+    // Set up the observer
+    const observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                callback(workspaceButton.textContent.trim());
+            }
+        }
+    });
+
+    observer.observe(workspaceButton, {
+        childList: true,
+        characterData: true,
+        subtree: true
+    });
+
+    // Initial value
+    callback(workspaceButton.textContent.trim());
+}
+
+function autoFillAndCreateSunoAI({ lyrics, style, title }) {
+    autoFillSunoAI({ lyrics, style, title });
+
+    // Click the "Create" button (replace selector as needed)
+    const createButton = Array.from(document.querySelectorAll('button')).find(btn =>
+        btn.textContent.trim().toLowerCase().includes('create')
+    );
+    if (createButton) {
+        setTimeout(() => {
+            createButton.click();
+            console.log("Song created automatically!");
+        }, 500);
+    } else {
+        console.error("Create button not found!");
+    }
+}
+
+// Example usage:
+autoFillAndCreateSunoAI({
+    lyrics: "Smooth jazz flows through the night, saxophone whispers, drums delight.",
+    style: "jazz, mellow, saxophone, soft drums",
+    title: "Midnight Jazz"
+});
+
+observeWorkspaceChange((workspaceName) => {
+    console.log("Workspace changed:", workspaceName);
+});
