@@ -1,85 +1,56 @@
-function autoFillSunoAI({ lyrics, style, title }) {
-    // Fill lyrics
-    const lyricsTextarea = document.querySelector('textarea[data-testid="lyrics-input-textarea"]');
-    if (lyricsTextarea) {
-        lyricsTextarea.value = lyrics;
-        lyricsTextarea.dispatchEvent(new Event('input', { bubbles: true }));
-    } else {
-        console.error("Lyrics textarea not found!");
-    }
-
-    // Fill style
-    const styleTextarea = document.querySelector('textarea[data-testid="tag-input-textarea"]');
-    if (styleTextarea) {
-        styleTextarea.value = style;
-        styleTextarea.dispatchEvent(new Event('input', { bubbles: true }));
-    } else {
-        console.error("Style textarea not found!");
-    }
-
-    // Fill title
-    const titleInput = document.querySelector('input[placeholder="Enter song title"]');
-    if (titleInput) {
-        titleInput.value = title;
-        titleInput.dispatchEvent(new Event('input', { bubbles: true }));
-    } else {
-        console.error("Title input not found!");
-    }
-}
-
-function observeWorkspaceChange(callback) {
-    // Find the workspace button by its text or selector
-    const workspaceButton = Array.from(document.querySelectorAll('button span')).find(span =>
-        span.textContent.trim().toLowerCase().includes('workspace')
+function autoTypeAndCreateAndDetect(text) {
+    // Find the lyrics textarea
+    const textarea = document.querySelector('textarea[data-testid="lyrics-input-textarea"]');
+    // Find the "Full Song" button by its text
+    const button = Array.from(document.querySelectorAll('button')).find(btn =>
+        btn.textContent.trim().toLowerCase().includes('full song')
     );
-    if (!workspaceButton) {
-        console.error("Workspace button not found!");
+
+    if (!textarea || !button) {
+        console.error("Lyrics textarea or Full Song button not found!");
         return;
     }
 
-    // Set up the observer
+    textarea.value = text;
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+
+    // Observe for song creation in workspace
+    observeCreatedSong((song) => {
+        console.log("Detected created song:", song);
+    });
+
+    setTimeout(() => {
+        button.click();
+        console.log("Song creation triggered!");
+    }, 500);
+}
+
+function observeCreatedSong(callback) {
+    // Workspace container
+    const observerTarget = document.querySelector('.custom-scrollbar-semitransparent');
+    if (!observerTarget) {
+        console.error("Workspace container not found!");
+        return;
+    }
+
     const observer = new MutationObserver((mutationsList) => {
         for (const mutation of mutationsList) {
-            if (mutation.type === 'childList' || mutation.type === 'characterData') {
-                callback(workspaceButton.textContent.trim());
+            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType === 1) {
+                        const title = node.querySelector?.('input[placeholder="Enter song title"]')?.value?.trim();
+                        const lyrics = node.querySelector?.('textarea[data-testid="lyrics-input-textarea"]')?.value?.trim();
+                        if (title || lyrics) {
+                            callback({ title, lyrics });
+                        }
+                    }
+                });
             }
         }
     });
 
-    observer.observe(workspaceButton, {
-        childList: true,
-        characterData: true,
-        subtree: true
-    });
-
-    // Initial value
-    callback(workspaceButton.textContent.trim());
-}
-
-function autoFillAndCreateSunoAI({ lyrics, style, title }) {
-    autoFillSunoAI({ lyrics, style, title });
-
-    // Click the "Create" button (replace selector as needed)
-    const createButton = Array.from(document.querySelectorAll('button')).find(btn =>
-        btn.textContent.trim().toLowerCase().includes('create')
-    );
-    if (createButton) {
-        setTimeout(() => {
-            createButton.click();
-            console.log("Song created automatically!");
-        }, 500);
-    } else {
-        console.error("Create button not found!");
-    }
+    observer.observe(observerTarget, { childList: true, subtree: true });
 }
 
 // Example usage:
-autoFillAndCreateSunoAI({
-    lyrics: "Smooth jazz flows through the night, saxophone whispers, drums delight.",
-    style: "jazz, mellow, saxophone, soft drums",
-    title: "Midnight Jazz"
-});
-
-observeWorkspaceChange((workspaceName) => {
-    console.log("Workspace changed:", workspaceName);
-});
+autoTypeAndCreateAndDetect("A mellow jazz tune with smooth saxophone and soft drums.");
