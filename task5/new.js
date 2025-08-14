@@ -38,7 +38,7 @@ async function autoSongDownloadAndCreate() {
 
       if (publishBtn && !publishBtn.disabled) {
         clearInterval(checkPublish);
-        console.log("✅ Publish button detected and enabled!");
+        console.log(" Publish button detected ");
         callback();
       }
     }, 1500);
@@ -58,7 +58,7 @@ async function autoSongDownloadAndCreate() {
     const moreOptionsBtn = firstSong.querySelector('button[aria-label="More Options"]');
     if (!moreOptionsBtn) throw new Error("❌ More Options not found!");
     realClick(moreOptionsBtn);
-    console.log("🔽 Clicked More Options");
+    console.log(" More Options clicked");
     await wait(500);
 
     // STEP 3: Click Download
@@ -67,7 +67,7 @@ async function autoSongDownloadAndCreate() {
                          .find(el => el.textContent.trim().toLowerCase() === "download");
     if (!downloadBtn) throw new Error("❌ Download option not found!");
     realClick(downloadBtn);
-    console.log("⬇ Clicked Download");
+    console.log("⬇ Download button clicked");
     await wait(500);
 
     // STEP 4: Click MP3 Audio
@@ -83,14 +83,12 @@ async function autoSongDownloadAndCreate() {
       .find(el => el.textContent.trim().toLowerCase().includes("download anyway"));
     if (!downloadAnywayBtn) throw new Error("❌ 'Download Anyway' button not found!");
     realClick(downloadAnywayBtn);
-    console.log("✅ Clicked 'Download Anyway'");
+    console.log("✅ Clicking 'Download Anyway'");
     await wait(500);
 
     console.log("🎉 MP3 Audio downloaded successfully!");
 
-    // =============================
-    // STEP 6: Create new song
-    // =============================
+    
     const lyricsBox = document.querySelector('textarea[data-testid="lyrics-input-textarea"]');
     const styleBox = document.querySelector('textarea[data-testid="tag-input-textarea"]');
     const titleBox = document.querySelector('input[placeholder="Enter song title"]');
@@ -125,7 +123,7 @@ async function autoSongDownloadAndCreate() {
         style: styleBox.value.trim()
       };
       console.log("📄 Final song details:", finalData);
-      console.log("✅ Song creation completed and details fetched!");
+      console.log("✅ Song crated sucessfully and fetched data");
     });
 
     // Click Create when ready
@@ -145,3 +143,4 @@ async function autoSongDownloadAndCreate() {
 // Run everything
 
 autoSongDownloadAndCreate();
+
