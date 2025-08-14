@@ -1,5 +1,5 @@
 async function autoSongDownloadAndCreate() {
-  console.log("🚀 Starting MP3 download and song creation automation...");
+  console.log("🚀 Starting MP3 download");
 
   // Helper wait function
   const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -143,4 +143,5 @@ async function autoSongDownloadAndCreate() {
 }
 
 // Run everything
+
 autoSongDownloadAndCreate();
